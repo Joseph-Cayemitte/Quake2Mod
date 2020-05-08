@@ -368,7 +368,7 @@ void Cmd_Help_f (edict_t *ent)
 
 
 //=======================================================================
-
+qboolean isTitan;
 /*
 ===============
 G_SetStats
@@ -380,11 +380,15 @@ void G_SetStats (edict_t *ent)
 	int			index, cells;
 	int			power_armor_type;
 
+	
+	
 	//
 	// health
 	//
+
 	ent->client->ps.stats[STAT_HEALTH_ICON] = level.pic_health;
 	ent->client->ps.stats[STAT_HEALTH] = ent->health;
+	
 
 	//
 	// ammo

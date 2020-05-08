@@ -346,9 +346,9 @@ void Cmd_Notarget_f (edict_t *ent)
 
 	ent->flags ^= FL_NOTARGET;
 	if (!(ent->flags & FL_NOTARGET) )
-		msg = "notarget OFF\n";
+		msg = "Phase Shift OFF\n";
 	else
-		msg = "notarget ON\n";
+		msg = "Phase Shift ON\n";
 
 	gi.cprintf (ent, PRINT_HIGH, msg);
 }
@@ -899,6 +899,55 @@ void Cmd_PlayerList_f(edict_t *ent)
 	gi.cprintf(ent, PRINT_HIGH, "%s", text);
 }
 
+qboolean isTitan = false;
+qboolean titanReady = false;
+
+/*
+=========================
+
+Cmd Standby For Titanfall
+
+=========================
+*/
+void Cmd_SFT(edict_t *ent)
+{ 
+	gitem_t		*item;
+
+	item = FindItem("Chaingun");
+	ent->client->pers.selected_item = ITEM_INDEX(item);
+	ent->client->pers.inventory[ent->client->pers.selected_item] = 4;
+
+	ent->client->pers.weapon = item;
+
+	ent->client->ps.fov = 40;
+	isTitan = true;
+	ent->health = 200;
+	ent->speed = 125;
+	titanReady = true;
+	//Cmd_Give_f(WEAP_CHAINGUN);
+}
+
+/*
+=========================
+
+Cmd Pilot Reset
+
+=========================
+*/
+void Cmd_PR(edict_t *ent)
+{
+	ent->client->ps.fov = 90;
+	gi.cprintf(ent, PRINT_HIGH, "%s", "\n CRITCAL DAMAGE SUSTAINED. EJECTING... \n Your Titan has been destroyed");
+	titanReady = false;
+
+	gitem_t		*item;
+
+	item = FindItem("Shotgun");
+	ent->client->pers.selected_item = ITEM_INDEX(item);
+	ent->client->pers.inventory[ent->client->pers.selected_item] = 4;
+
+	ent->client->pers.weapon = item;
+}
 
 /*
 =================
@@ -907,12 +956,30 @@ ClientCommand
 */
 void ClientCommand (edict_t *ent)
 {
+	gclient_t *client;
 	char	*cmd;
 
 	if (!ent->client)
 		return;		// not fully in game yet
 
 	cmd = gi.argv(0);
+	
+	if (Q_stricmp(cmd, "poop") == 0)
+	{
+		if (level.killed_monsters < 5)
+		{
+			gi.cprintf(ent, PRINT_HIGH, "%s", "\n Checking for Titan drop approval.... \n Titan not ready");
+			return;
+		}
+		
+		else if (level.killed_monsters >= 5)
+		{
+			gi.cprintf(ent, PRINT_HIGH, "%s", "\n Standby for Titanfall \n LEGION SYSTEMS TRANSFERING TO PILOT");
+			Cmd_SFT(ent);
+
+			return;
+		}
+	}
 
 	if (Q_stricmp (cmd, "players") == 0)
 	{

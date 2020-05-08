@@ -522,6 +522,9 @@ void P_FallingDamage (edict_t *ent)
 	}
 	delta = delta*delta * 0.0001;
 
+	// never take damage if just release grapple or on grapple
+		return;
+
 	// never take falling damage if completely underwater
 	if (ent->waterlevel == 3)
 		return;
@@ -898,6 +901,7 @@ void G_SetClientFrame (edict_t *ent)
 	if (client->anim_priority == ANIM_JUMP)
 	{
 		if (!ent->groundentity)
+			ent->s.frame++;
 			return;		// stay there
 		ent->client->anim_priority = ANIM_WAVE;
 		ent->s.frame = FRAME_jump3;

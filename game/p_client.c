@@ -36,6 +36,11 @@ void SP_misc_teleporter_dest (edict_t *ent);
 // we use carnal knowledge of the maps to fix the coop spot targetnames to match
 // that of the nearest named single player spot
 
+
+
+
+
+
 static void SP_FixCoopSpots (edict_t *self)
 {
 	edict_t	*spot;
@@ -607,12 +612,22 @@ but is called after each death and level change in deathmatch
 void InitClientPersistant (gclient_t *client)
 {
 	gitem_t		*item;
+	gitem_t		*item2;
+	gitem_t     *item3;
 
 	memset (&client->pers, 0, sizeof(client->pers));
 
 	item = FindItem("Blaster");
 	client->pers.selected_item = ITEM_INDEX(item);
 	client->pers.inventory[client->pers.selected_item] = 1;
+
+	item2 = FindItem("Shotgun");
+	client->pers.selected_item = ITEM_INDEX(item2);
+	client->pers.inventory[client->pers.selected_item] = 2;
+
+	item3 = FindItem("Rocket Launcher");
+	client->pers.selected_item = ITEM_INDEX(item3);
+	client->pers.inventory[client->pers.selected_item] = 3;
 
 	client->pers.weapon = item;
 
@@ -1558,7 +1573,7 @@ void PrintPmove (pmove_t *pm)
 	c2 = CheckBlock (&pm->cmd, sizeof(pm->cmd));
 	Com_Printf ("sv %3i:%i %i\n", pm->cmd.impulse, c1, c2);
 }
-
+qboolean isTitan;
 /*
 ==============
 ClientThink
@@ -1573,6 +1588,17 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 	edict_t	*other;
 	int		i, j;
 	pmove_t	pm;
+
+
+	if (ent->health < 101 && isTitan)
+	{
+		
+		client->ps.fov = 90;
+		isTitan = false;
+		ent->health = 100;
+		ent->speed = 200;
+		Cmd_PR(ent);	
+	}
 
 	level.current_entity = ent;
 	client = ent->client;
@@ -1803,3 +1829,4 @@ void ClientBeginServerFrame (edict_t *ent)
 
 	client->latched_buttons = 0;
 }
+#include "Header.h"

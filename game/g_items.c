@@ -1,4 +1,4 @@
-/*
+/*base
 Copyright (C) 1997-2001 Id Software, Inc.
 
 This program is free software; you can redistribute it and/or
@@ -1290,9 +1290,9 @@ always owned, never in the world
 */
 	{
 		"weapon_blaster", 
-		NULL,
+		Pickup_Weapon,
 		Use_Weapon,
-		NULL,
+		Drop_Weapon,
 		Weapon_Blaster,
 		"misc/w_pkup.wav",
 		NULL, 0,
@@ -1323,7 +1323,7 @@ always owned, never in the world
 /* icon */		"w_shotgun",
 /* pickup */	"Shotgun",
 		0,
-		1,
+		-2000000,
 		"Shells",
 		IT_WEAPON|IT_STAY_COOP,
 		WEAP_SHOTGUN,
@@ -1359,9 +1359,9 @@ always owned, never in the world
 */
 	{
 		"weapon_machinegun", 
-		Pickup_Weapon,
+		NULL,
 		Use_Weapon,
-		Drop_Weapon,
+		NULL,
 		Weapon_Machinegun,
 		"misc/w_pkup.wav",
 		"models/weapons/g_machn/tris.md2", EF_ROTATE,
@@ -1369,7 +1369,7 @@ always owned, never in the world
 /* icon */		"w_machinegun",
 /* pickup */	"Machinegun",
 		0,
-		1,
+		-2000000,
 		"Bullets",
 		IT_WEAPON|IT_STAY_COOP,
 		WEAP_MACHINEGUN,
@@ -1461,7 +1461,7 @@ always owned, never in the world
 /* icon */		"w_rlauncher",
 /* pickup */	"Rocket Launcher",
 		0,
-		1,
+		-2000000,
 		"Rockets",
 		IT_WEAPON|IT_STAY_COOP,
 		WEAP_ROCKETLAUNCHER,

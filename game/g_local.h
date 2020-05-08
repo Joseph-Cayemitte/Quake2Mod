@@ -230,6 +230,7 @@ typedef struct
 #define WEAP_HYPERBLASTER		9 
 #define WEAP_RAILGUN			10
 #define WEAP_BFG				11
+#define WEAP_GRAPPLE			12
 
 typedef struct gitem_s
 {
@@ -340,6 +341,7 @@ typedef struct
 	int			power_cubes;		// ugly necessity for coop
 } level_locals_t;
 
+extern qboolean isTitan;
 
 // spawn_temp_t is only used to hold entity field values that
 // can be set from the editor, but aren't actualy present
@@ -449,6 +451,10 @@ typedef struct
 
 
 
+
+#define CTF_GRAPPLE_SPEED					650 // speed of grapple in flight
+#define CTF_GRAPPLE_PULL_SPEED				650	// speed player is pulled at
+
 extern	game_locals_t	game;
 extern	level_locals_t	level;
 extern	game_import_t	gi;
@@ -498,6 +504,7 @@ extern	int	body_armor_index;
 #define MOD_TRIGGER_HURT	31
 #define MOD_HIT				32
 #define MOD_TARGET_BLASTER	33
+#define MOD_GRAPPLE			34
 #define MOD_FRIENDLY_FIRE	0x8000000
 
 extern	int	meansOfDeath;
@@ -957,9 +964,11 @@ struct gclient_s
 
 	float		respawn_time;		// can respawn when time > this
 
-	edict_t		*chase_target;		// player we are chasing
-	qboolean	update_chase;		// need to update chase info?
+	edict_t		*chase_target;
+	qboolean	update_chase;
+	
 };
+
 
 
 struct edict_s
@@ -1110,4 +1119,3 @@ struct edict_s
 	moveinfo_t		moveinfo;
 	monsterinfo_t	monsterinfo;
 };
-
